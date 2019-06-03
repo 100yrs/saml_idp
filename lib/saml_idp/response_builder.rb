@@ -29,6 +29,7 @@ module SamlIdp
     private :encode
 
     def build
+      Rails.logger.info "SamlIdp::ResponseBuilder build CALLED"
       resp_options = {}
       resp_options[:ID] = response_id_string
       resp_options[:Version] =  "2.0"

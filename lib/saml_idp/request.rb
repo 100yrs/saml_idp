@@ -32,10 +32,12 @@ module SamlIdp
     end
 
     def logout_request?
+      Rails.logger.info "SamlIdp::Request logout_request: #{logout_request}"
       logout_request.nil? ? false : true
     end
 
     def authn_request?
+      Rails.logger.info "SamlIdp::Request authn_request: #{authn_request}"
       authn_request.nil? ? false : true
     end
 

@@ -35,6 +35,7 @@ module SamlIdp
 
     def validate_saml_request(raw_saml_request = params[:SAMLRequest])
       decode_request(raw_saml_request)
+      Rails.logger.info "CONTROLLER valid_saml_request: #{valid_saml_request?}"
       return true if valid_saml_request?
       if Rails::VERSION::MAJOR >= 4
         head :forbidden
@@ -80,6 +81,8 @@ module SamlIdp
     end
 
     def encode_logout_response(principal, opts = {})
+      Rails.logger.info "CONTROLLER encode_logout_response"
+      Rails.logger.info "CONTROLLER saml_request_id: #{saml_request_id}"
       SamlIdp::LogoutResponseBuilder.new(
         get_saml_response_id,
         (opts[:issuer_uri] || issuer_uri),
@@ -93,6 +96,7 @@ module SamlIdp
       if saml_request.authn_request?
         encode_authn_response(principal, opts)
       elsif saml_request.logout_request?
+        Rails.logger.info 'CONTROLLER logout_request'
         encode_logout_response(principal, opts)
       else
         raise "Unknown request: #{saml_request}"
@@ -110,6 +114,7 @@ module SamlIdp
     end
 
     def saml_request_id
+      Rails.logger.info "CONTROLLER saml_request: #{saml_request.inspect}"
       saml_request.request_id
     end
 
