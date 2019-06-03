@@ -18,6 +18,7 @@ module SamlIdp
     protected
 
     def saml_request
+      Rails.logger.info "CONTROLLER saml_request"
       @saml_request ||= Struct.new(:request_id) do
         def authn_request?
           true
