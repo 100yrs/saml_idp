@@ -47,6 +47,7 @@ module SamlIdp
     end
 
     def decode_request(raw_saml_request)
+      Rails.logger.info "CONTROLLER decode_request"
       @saml_request = Request.from_deflated_request(raw_saml_request)
     end
 
@@ -94,6 +95,7 @@ module SamlIdp
     end
 
     def encode_response(principal, opts = {})
+      Rails.logger.info "CONTROLLER encode_response"
       if saml_request.authn_request?
         encode_authn_response(principal, opts)
       elsif saml_request.logout_request?
