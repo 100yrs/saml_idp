@@ -96,7 +96,9 @@ module SamlIdp
 
     def encode_response(principal, opts = {})
       Rails.logger.info "CONTROLLER encode_response"
+      Rails.logger.info saml_request.inspect
       if saml_request.authn_request?
+        Rails.logger.info 'CONTROLLER authn_request'
         encode_authn_response(principal, opts)
       elsif saml_request.logout_request?
         Rails.logger.info 'CONTROLLER logout_request'

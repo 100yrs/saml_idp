@@ -169,11 +169,15 @@ module SamlIdp
     private :authn_context_node
 
     def authn_request
+      Rails.logger.info 'SamlIdp::Request auth_request'
+      Rails.logger.info xpath("//samlp:AuthnRequest", samlp: samlp).first
       @_authn_request ||= xpath("//samlp:AuthnRequest", samlp: samlp).first
     end
     private :authn_request
 
     def logout_request
+      Rails.logger.info 'SamlIdp::Request logout_request'
+      Rails.logger.info xpath("//samlp:LogoutRequest", samlp: samlp).first
       @_logout_request ||= xpath("//samlp:LogoutRequest", samlp: samlp).first
     end
     private :logout_request
