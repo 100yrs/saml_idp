@@ -21,6 +21,7 @@ module SamlIdp
     attr_accessor :session_expiry
 
     def initialize
+      Rails.logger.info "SamlIdp::Configurator INITIALIZE"
       self.x509_certificate = Default::X509_CERTIFICATE
       self.secret_key = Default::SECRET_KEY
       self.algorithm = :sha1

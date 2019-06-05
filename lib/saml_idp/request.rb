@@ -126,12 +126,16 @@ module SamlIdp
     end
 
     def service_provider
+      Rails.logger.info 'SamlIdp::Request service_provider'
+      Rails.logger.info issuer.inspect
       return unless issuer.present?
       @_service_provider ||= ServiceProvider.new((service_provider_finder[issuer] || {}).merge(identifier: issuer))
     end
 
     def issuer
       @_issuer ||= xpath("//saml:Issuer", saml: assertion).first.try(:content)
+      Rails.logger.info "SamlIdp::Request issuer"
+      Rails.logger.info xpath("//saml:Issuer", saml: assertion).first.inspect
       @_issuer if @_issuer.present?
     end
 
