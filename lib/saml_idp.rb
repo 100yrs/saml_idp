@@ -66,6 +66,8 @@ module Saml
 
     class Document < Nokogiri::XML::Document
       def signed?
+        Rails.logger.info 'Saml::XML::Document signed?'
+        Rails.logger.info xpath("//ds:Signature", ds: signature_namespace)
         !!xpath("//ds:Signature", ds: signature_namespace).first
       end
 
