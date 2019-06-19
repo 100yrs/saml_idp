@@ -4,6 +4,7 @@ module SamlIdp
   class Request
     def self.from_deflated_request(raw)
       Rails.logger.info 'SamlIdp::Request from_deflated_request'
+      Rails.logger.info raw.inspect
       if raw
         decoded = Base64.decode64(raw)
         zstream = Zlib::Inflate.new(-Zlib::MAX_WBITS)
@@ -18,6 +19,7 @@ module SamlIdp
       else
         inflated = ""
       end
+      Rails.logger.info inflated.inspect
       new(inflated)
     end
 

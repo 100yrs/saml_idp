@@ -68,6 +68,7 @@ module Saml
       def signed?
         Rails.logger.info 'Saml::XML::Document signed?'
         Rails.logger.info xpath("//ds:Signature", ds: signature_namespace)
+        Rails.logger.info !!xpath("//ds:Signature", ds: signature_namespace).first
         !!xpath("//ds:Signature", ds: signature_namespace).first
       end
 
