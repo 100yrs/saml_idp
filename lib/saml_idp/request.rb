@@ -121,7 +121,9 @@ module SamlIdp
     def valid_signature?
       # Force signatures for logout requests because there is no other
       # protection against a cross-site DoS.
-      service_provider.valid_signature?(document, logout_request?)
+      # service_provider.valid_signature?(document, logout_request?)
+      # Don't require signature for Logout, to support Hivebrite
+      service_provider.valid_signature?(document, false)
     end
 
     def service_provider?
