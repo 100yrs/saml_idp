@@ -35,12 +35,12 @@ module SamlIdp
     end
 
     def logout_request?
-      Rails.logger.info "SamlIdp::Request logout_request: #{logout_request}"
+      Rails.logger.info "SamlIdp::Request logout_request?: #{logout_request}"
       logout_request.nil? ? false : true
     end
 
     def authn_request?
-      Rails.logger.info "SamlIdp::Request authn_request: #{authn_request}"
+      Rails.logger.info "SamlIdp::Request authn_request?: #{authn_request}"
       authn_request.nil? ? false : true
     end
 
@@ -65,6 +65,7 @@ module SamlIdp
     end
 
     def acs_url
+      Rails.logger.info "service_provider.acs_url = #{service_provider.acs_url}"
       service_provider.acs_url ||
         authn_request["AssertionConsumerServiceURL"].to_s
     end
@@ -74,6 +75,8 @@ module SamlIdp
     end
 
     def response_url
+      Rails.logger.info "authn_request? = #{authn_request?}"
+      Rails.logger.info "logout_request? = #{logout_request?}"
       if authn_request?
         acs_url
       elsif logout_request?
@@ -173,7 +176,7 @@ module SamlIdp
     private :authn_context_node
 
     def authn_request
-      Rails.logger.info 'SamlIdp::Request auth_request'
+      Rails.logger.info 'SamlIdp::Request authn_request'
       Rails.logger.info xpath("//samlp:AuthnRequest", samlp: samlp).first
       @_authn_request ||= xpath("//samlp:AuthnRequest", samlp: samlp).first
     end
