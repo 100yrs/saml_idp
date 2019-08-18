@@ -9,7 +9,6 @@ module SamlIdp
     end
 
     def build
-      Rails.logger.info "SamlIdp::LogoutRequestBuilder build CALLED"
       builder = Builder::XmlMarkup.new
       builder.LogoutRequest ID: response_id_string,
         Version: "2.0",

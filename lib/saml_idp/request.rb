@@ -3,8 +3,6 @@ require 'saml_idp/service_provider'
 module SamlIdp
   class Request
     def self.from_deflated_request(raw)
-      Rails.logger.info 'SamlIdp::Request from_deflated_request'
-      Rails.logger.info raw.inspect
       if raw
         decoded = Base64.decode64(raw)
         zstream = Zlib::Inflate.new(-Zlib::MAX_WBITS)
@@ -19,7 +17,7 @@ module SamlIdp
       else
         inflated = ""
       end
-      Rails.logger.info inflated.inspect
+
       new(inflated)
     end
 
@@ -35,12 +33,10 @@ module SamlIdp
     end
 
     def logout_request?
-      Rails.logger.info "SamlIdp::Request logout_request?: #{logout_request}"
       logout_request.nil? ? false : true
     end
 
     def authn_request?
-      Rails.logger.info "SamlIdp::Request authn_request?: #{authn_request}"
       authn_request.nil? ? false : true
     end
 
@@ -65,7 +61,6 @@ module SamlIdp
     end
 
     def acs_url
-      Rails.logger.info "service_provider.acs_url = #{service_provider.acs_url}"
       service_provider.acs_url ||
         authn_request["AssertionConsumerServiceURL"].to_s
     end
@@ -75,8 +70,6 @@ module SamlIdp
     end
 
     def response_url
-      Rails.logger.info "authn_request? = #{authn_request?}"
-      Rails.logger.info "logout_request? = #{logout_request?}"
       if authn_request?
         acs_url
       elsif logout_request?
@@ -134,16 +127,12 @@ module SamlIdp
     end
 
     def service_provider
-      Rails.logger.info 'SamlIdp::Request service_provider'
-      Rails.logger.info issuer.inspect
       return unless issuer.present?
       @_service_provider ||= ServiceProvider.new((service_provider_finder[issuer] || {}).merge(identifier: issuer))
     end
 
     def issuer
       @_issuer ||= xpath("//saml:Issuer", saml: assertion).first.try(:content)
-      Rails.logger.info "SamlIdp::Request issuer"
-      Rails.logger.info xpath("//saml:Issuer", saml: assertion).first.inspect
       @_issuer if @_issuer.present?
     end
 
@@ -176,15 +165,11 @@ module SamlIdp
     private :authn_context_node
 
     def authn_request
-      Rails.logger.info 'SamlIdp::Request authn_request'
-      Rails.logger.info xpath("//samlp:AuthnRequest", samlp: samlp).first
       @_authn_request ||= xpath("//samlp:AuthnRequest", samlp: samlp).first
     end
     private :authn_request
 
     def logout_request
-      Rails.logger.info 'SamlIdp::Request logout_request'
-      Rails.logger.info xpath("//samlp:LogoutRequest", samlp: samlp).first
       @_logout_request ||= xpath("//samlp:LogoutRequest", samlp: samlp).first
     end
     private :logout_request

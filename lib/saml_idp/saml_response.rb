@@ -48,7 +48,6 @@ module SamlIdp
     end
 
     def build
-      Rails.logger.info "SamlIdp::SamlResponse build CALLED"
       @built ||= response_builder.encoded
     end
 
@@ -62,7 +61,6 @@ module SamlIdp
     private :signed_assertion
 
     def response_builder
-      Rails.logger.info "SamlIdp::SamlResponse response_builder CALLED"
       ResponseBuilder.new(response_id, issuer_uri, saml_acs_url, saml_request_id, signed_assertion)
     end
     private :response_builder
